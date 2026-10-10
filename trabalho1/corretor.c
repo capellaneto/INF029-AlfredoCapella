@@ -34,9 +34,9 @@ int main()
 {
     // testSomar();
     // testFatorial();
-    testQ1();
+    // testQ1();
     // testQ2();
-    // testQ3();
+    testQ3();
     // testQ4();
     // testQ5();
     // testQ6();
@@ -142,6 +142,7 @@ void testQ2()
 
 void testQ3()
 {
+    printf("TESTES DA QUESTAO 3:\n\n");
     show_log("testQ3()");
     char str[250];
     strcpy(str, "Renato Lima Novais");
