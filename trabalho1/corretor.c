@@ -36,9 +36,9 @@ int main()
     // testFatorial();
     // testQ1();
     // testQ2();
-    testQ3();
+    // testQ3();
     // testQ4();
-    // testQ5();
+    testQ5();
     // testQ6();
     // testQ7();
 }
@@ -72,6 +72,8 @@ void testFatorial()
 
 void testQ1()
 {
+    printf("\nTESTES DA QUESTAO 1:\n\n");
+
     show_log("testQ1()");
     char str[11];
     strcpy(str, "29/02/2015");
@@ -142,7 +144,7 @@ void testQ2()
 
 void testQ3()
 {
-    printf("TESTES DA QUESTAO 3:\n\n");
+    printf("\nTESTES DA QUESTAO 3:\n\n");
     show_log("testQ3()");
     char str[250];
     strcpy(str, "Renato Lima Novais");
@@ -155,6 +157,8 @@ void testQ3()
 
 void testQ4()
 {
+    printf("\nTESTES DA QUESTAO 4:\n\n");
+    
     show_log("testQ4()");
     char strTexto[250];
     char strBusca[50];

@@ -232,7 +232,54 @@ int q3(char *texto, char c, int isCaseSensitive)
  */
 int q4(char *strTexto, char *strBusca, int posicoes[30])
 {
-    int qtdOcorrencias = -1;
+    int qtdOcorrencias = 0;
+    int i, j;
+    int inicio, fim;
+    int k;
+    int acentos;
+
+    for (i = 0; strTexto[i] != '\0'; i++)
+    {
+        for (j = 0; strBusca[j] != '\0'; j++)
+        {
+            if (strTexto[i+j] != strBusca[j])
+            {
+                break;
+            }
+        }
+
+        if (strBusca[j] == '\0')
+        {
+            inicio = i;
+            fim = i + j - 1;
+
+            acentos = 0;
+
+            for (k = 0; k < inicio; k++)
+            {
+                if (strTexto[k] == -61)
+                {
+                    acentos++;
+                }
+            }
+
+            posicoes[qtdOcorrencias * 2] = inicio - acentos + 1;
+
+            acentos = 0;
+
+            for (k = 0; k <= fim; k++)
+            {
+                if (strTexto[k] == -61)
+                {
+                    acentos++;
+                }
+            }
+
+            posicoes[qtdOcorrencias * 2 + 1] = fim - acentos + 1;
+
+            qtdOcorrencias++;
+        }
+    }
 
     return qtdOcorrencias;
 }
@@ -249,7 +296,18 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
 
 int q5(int num)
 {
+    int i, invertido = 0;
 
+    while(num > 0)
+    {
+        invertido = invertido  * 10 + num % 10;
+
+        num = num / 10;
+    }
+
+    num = invertido;
+
+    
     return num;
 }
 
