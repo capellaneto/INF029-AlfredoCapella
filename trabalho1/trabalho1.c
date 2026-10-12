@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include "trabalho1.h" 
 #include <stdlib.h>
+#include <string.h>
 
 DataQuebrada quebraData(char data[]);
 
@@ -129,7 +130,7 @@ int q1(char data[])
         }
         if(data_Quebrada.iDia == 29) //ver se é ano bissexto
         {
-            if ((data_Quebrada.iAno % 400 != 0) && (data_Quebrada.iAno % 4 != 0 || data_Quebrada.iAno % 100 == 0))
+            if (ehBissexto(data_Quebrada.iAno) == 0)
             {
                 return 0;
             }
@@ -167,10 +168,72 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
       dma.retorno = 3;
       return dma;
     }else{
-      //verifique se a data final não é menor que a data inicial
-      
-      //calcule a distancia entre as datas
+      DataQuebrada inicial = quebraData(datainicial);
+      DataQuebrada final = quebraData(datafinal);
 
+      int diferencaAno = 0, diferencaMes = 0, diferencaDia = 0;
+
+      int data1 = inicial.iAno * 10000 + inicial.iMes * 100 + inicial.iDia;
+      int data2 = final.iAno * 10000 + final.iMes * 100 + final.iDia;
+      if(data1 > data2)
+      {
+        dma.retorno = 4;
+        return dma;
+      }
+
+      diferencaAno = final.iAno - inicial.iAno;
+      diferencaMes = final.iMes - inicial.iMes;
+      diferencaDia = final.iDia - inicial.iDia;
+
+      if(diferencaMes < 0)
+      {
+        diferencaAno--;
+        diferencaMes = diferencaMes + 12;
+      }
+
+
+      if(diferencaDia < 0)
+      {
+        int mesAnterior = final.iMes - 1;
+        int diasMesAnterior;
+
+        if (mesAnterior == 1 || mesAnterior == 3 ||
+            mesAnterior == 5 || mesAnterior == 7 ||
+            mesAnterior == 8 || mesAnterior == 10 ||
+            mesAnterior == 12)
+        {
+            diasMesAnterior = 31;
+        }
+        
+        else if(mesAnterior == 4 || mesAnterior == 6 || mesAnterior == 9 || mesAnterior == 11)
+        {
+            diasMesAnterior = 30;
+        }
+
+        else if(mesAnterior == 2)
+        {
+            if(ehBissexto(final.iAno))
+            {
+                diasMesAnterior = 29;
+            }
+            else
+            {
+                diasMesAnterior = 28;
+            }
+        }
+        diferencaMes--;
+        diferencaDia = diferencaMes + diasMesAnterior;
+      }
+
+      if (diferencaMes < 0)
+        {
+            diferencaAno--;
+            diferencaMes = diferencaMes + 12;
+        }
+
+      dma.qtdAnos = diferencaAno;
+      dma.qtdMeses = diferencaMes;
+      dma.qtdDias = diferencaDia;
 
       //se tudo der certo
       dma.retorno = 1;
@@ -296,7 +359,7 @@ int q4(char *strTexto, char *strBusca, int posicoes[30])
 
 int q5(int num)
 {
-    int i, invertido = 0;
+    int invertido = 0;
 
     while(num > 0)
     {
@@ -307,7 +370,7 @@ int q5(int num)
 
     num = invertido;
 
-    
+
     return num;
 }
 
@@ -323,7 +386,27 @@ int q5(int num)
 
 int q6(int numerobase, int numerobusca)
 {
-    int qtdOcorrencias;
+    int qtdOcorrencias = 0;
+    int copiaBase, copiaBusca;
+
+    while(numerobase > 0)
+    {
+        copiaBase = numerobase;
+        copiaBusca = numerobusca;
+
+        while(copiaBusca > 0 && copiaBase % 10 == copiaBusca % 10)
+        {
+            copiaBase = copiaBase / 10;
+            copiaBusca = copiaBusca / 10;
+        }
+        if(copiaBusca == 0)
+        {
+            qtdOcorrencias++;
+        }
+
+        numerobase = numerobase / 10;
+    }
+
     return qtdOcorrencias;
 }
 
@@ -339,13 +422,159 @@ int q6(int numerobase, int numerobusca)
 
  int q7(char matriz[8][10], char palavra[5])
  {
-     int achou;
+     int achou = 0;
+     int cont;
+     int tam = strlen(palavra);
+
+     for(int i = 0; i < 8; i++)
+     {
+        for(int j = 0; j < 10; j++)
+        {
+            if(matriz[i][j] == palavra[0])
+            {
+
+                cont = 1;
+                for(int k = 1; k < tam; k++)
+                {
+                     if(j + k >= 10 || matriz[i][j+k] != palavra[k]) //se for horizontal pra direita
+                    {
+                        break;
+                    }
+                     
+                     cont++;
+                }
+
+                    if(cont == tam)
+                    achou = 1;
+                    
+                    // se for horizontal para a esquerda
+                cont = 1;
+                for(int k = 1; k < tam; k++)
+                {
+                    if(j - k < 0 || matriz[i][j-k] != palavra[k])
+                    {
+                        break;
+                    }
+
+                    cont++;
+                }
+
+                if(cont == tam)
+                    achou = 1;
+
+                // se for vertical para baixo
+                cont = 1;
+                for(int k = 1; k < tam; k++)
+                {
+                    if(i + k >= 8 || matriz[i+k][j] != palavra[k])
+                    {
+                        break;
+                    }
+
+                    cont++;
+                }
+
+                if(cont == tam)
+                    achou = 1;
+
+                // se for vertical para cima
+                cont = 1;
+                for(int k = 1; k < tam; k++)
+                {
+                    if(i - k < 0 || matriz[i-k][j] != palavra[k])
+                    {
+                        break;
+                    }
+
+                    cont++;
+                }
+
+                if(cont == tam)
+                    achou = 1;
+
+                // se for diagonal para a direita e para baixo
+                cont = 1;
+                for(int k = 1; k < tam; k++)
+                {
+                    if(i + k >= 8 || j + k >= 10 || matriz[i+k][j+k] != palavra[k])
+                    {
+                        break;
+                    }
+
+                    cont++;
+                }
+
+                if(cont == tam)
+                    achou = 1;
+
+                // se for diagonal para a esquerda e para cima
+                cont = 1;
+                for(int k = 1; k < tam; k++)
+                {
+                    if(i - k < 0 || j - k < 0 || matriz[i-k][j-k] != palavra[k])
+                    {
+                        break;
+                    }
+
+                    cont++;
+                }
+
+                if(cont == tam)
+                    achou = 1;
+
+                // se for diagonal para a esquerda e para baixo
+                cont = 1;
+                for(int k = 1; k < tam; k++)
+                {
+                    if(i + k >= 8 || j - k < 0 || matriz[i+k][j-k] != palavra[k])
+                    {
+                        break;
+                    }
+
+                    cont++;
+                }
+
+                if(cont == tam)
+                    achou = 1;
+
+                // se for diagonal para a direita e para cima
+                cont = 1;
+                for(int k = 1; k < tam; k++)
+                {
+                    if(i - k < 0 || j + k >= 10 || matriz[i-k][j+k] != palavra[k])
+                    {
+                        break;
+                    }
+
+                    cont++;
+                }
+
+                if(cont == tam)
+                    achou = 1;
+            }
+        }
+    }
      return achou;
  }
 
 
 
-DataQuebrada quebraData(char data[]){
+int ehBissexto(int ano)
+{
+    if(ano % 400 == 0)
+    {
+        return 1;
+    }
+
+    if(ano % 4 == 0 && ano % 100 != 0)
+    {
+        return 1;
+    }
+
+    return 0;
+}
+
+ DataQuebrada quebraData(char data[]){
   DataQuebrada dq;
   char sDia[3];
 	char sMes[3];

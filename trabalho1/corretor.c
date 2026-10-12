@@ -32,15 +32,15 @@ void testQ7();
 
 int main()
 {
-    // testSomar();
-    // testFatorial();
-    // testQ1();
-    // testQ2();
-    // testQ3();
-    // testQ4();
+    testSomar();
+    testFatorial();
+    testQ1();
+    testQ2();
+    testQ3();
+    testQ4();
     testQ5();
-    // testQ6();
-    // testQ7();
+    testQ6();
+    testQ7();
 }
 
 int ligado = 0;
@@ -52,6 +52,8 @@ void show_log(char *str)
 
 void testSomar()
 {
+    printf("\nTESTES DO SOMAR:\n\n");
+
     show_log("testeSomar()");
     printf("%d\n", somar(3, 4) == 7);
     printf("%d\n", somar(-1, -3) == -4);
@@ -64,6 +66,8 @@ void testSomar()
 
 void testFatorial()
 {
+    printf("\nTESTES DO FATORIAL:\n\n");
+
     show_log("testFatorial()");
     printf("%d\n", fatorial(3) == 6);
     printf("%d\n", fatorial(1) == 1);
@@ -90,6 +94,8 @@ void testQ1()
 
 void testQ2()
 {
+    printf("\nTESTES DA QUESTAO 2:\n\n");
+    
     show_log("testQ2()");
     char datainicial[11], datafinal[11];
     int qtdDias, qtdMeses, qtdAnos;
@@ -193,6 +199,8 @@ void testQ4()
 
 void testQ5()
 {
+    printf("\nTESTES DA QUESTAO 5:\n\n");
+    
     show_log("testQ5()");
     printf("%d\n", q5(345) == 543);
     printf("%d\n", q5(78) == 87);
@@ -202,6 +210,8 @@ void testQ5()
 
 void testQ6()
 {
+    printf("\nTESTES DA QUESTAO 6:\n\n");
+    
     show_log("testQ6()");
     printf("%d\n", q6(34567368, 3) == 2);
     printf("%d\n", q6(34567368, 4576) == 0);
